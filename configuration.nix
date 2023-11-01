@@ -163,11 +163,10 @@
     sshfs
     krb5
 # -- lsp packages
-    llvmPackages_rocm.clang-unwrapped
-    llvmPackages_rocm.clang-tools-extra
-    pkgs.nodePackages_latest.pyright
-    pkgs.nodePackages_latest.yaml-language-server
-    pkgs.lua-language-server
+    clang-tools
+    nodePackages_latest.pyright
+    nodePackages_latest.yaml-language-server
+    lua-language-server
     lua nodejs_20 rustc rustup rustfmt rust-analyzer
     bear
   ];

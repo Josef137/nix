@@ -166,6 +166,9 @@
     sshfs
     krb5
     patchelf
+    thunderbird
+    valgrind
+    rofi
 # -- lsp packages
     clang-tools
     clang

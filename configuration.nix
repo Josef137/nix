@@ -57,7 +57,7 @@
     windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [ 
-        dmenu
+      	rofi
         i3status
         i3lock
 	i3lock-color
@@ -168,7 +168,6 @@
     patchelf
     thunderbird
     valgrind
-    rofi
 # -- lsp packages
     clang-tools
     clang
@@ -177,6 +176,11 @@
     lua-language-server
     lua nodejs_20 rustc rustup rustfmt rust-analyzer
     bear
+# -- spotify
+    spotify
+    spotify-tray
+    spotify-player
+# -- to remove
   ];
 
   #extra documentation from added libs

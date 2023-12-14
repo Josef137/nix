@@ -11,8 +11,34 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    useOSProber = true;
+    theme = pkgs.stdenv.mkDerivation rec {
+      pname = "catppuccin-grub";
+      version = "1";
+      src = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "grub";
+        rev = "803c5df";
+        hash = "sha256-/bSolCta8GCZ4lP0u5NVqYQ9Y3ZooYCNdTwORNvR7M0=";
+      };
+      installPhase = "
+        mkdir -p $out
+        cp -r src/catppuccin-mocha-grub-theme/* $out/  
+      ";
+      meta = {
+        description = "catppuccin-grub";
+      };
+    };
+  };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
   networking.hostName = "JosefonNix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -37,6 +63,8 @@
   # Configure keymap in X11
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "ctrl:nocaps";
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   environment.pathsToLink = ["/libexec"]; # links /libexec from derivations to /run/current-system/sw
 
@@ -68,32 +96,8 @@
       ];
     };
    };
-  
 
-  # Capslock as Control + Escape everywhere
-  /*
-  services.interception-tools = let
-	  dfkConfig = pkgs.writeText "dual-function-keys.yaml" ''
-	  MAPPINGS:
-	  - KEY: KEY_CAPSLOCK
-	  TAP: KEY_ESC
-	  HOLD: KEY_LEFTCTRL
-	  '';
-  in {
-	  enable = true;
-	  plugins = lib.mkForce [
-		  pkgs.interception-tools-plugins.dual-function-keys
-	  ];
-	  udevmonConfig = ''
-		  - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c ${dfkConfig} | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
-		  DEVICE:
-                    NAME: "Kinesis Advantage2 Keyboard"
-		    EVENTS:
-	              EV_KEY: [[KEY_CAPSLOCK, KEY_ESC, KEY_LEFTCTRL]]
-	  '';
-  };
-  */
-
+  services.picom.enable = true;  
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -150,14 +154,13 @@
     nerdfonts
     alacritty
     xcape bat picom
-    # interception-tools
     zsh
     oh-my-zsh
     eww
     zip unzip git gnumake gcc htop gdb file xsel feh
     man-pages
     man-pages-posix
-    bluezFull
+    bluez
     blueberry
     bluez-tools
     pavucontrol
@@ -168,6 +171,8 @@
     patchelf
     thunderbird
     valgrind
+# -- music
+     lmms
 # -- lsp packages
     clang-tools
     clang
@@ -187,8 +192,8 @@
   documentation.dev.enable = true;
 
   fonts = {
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
+    enableDefaultPackages = true;
+    packages = with pkgs; [
       nerdfonts
     ];
   };

@@ -141,6 +141,7 @@
       brave
       discord
       tree
+      rust-analyzer
     ];
   };
 
@@ -179,7 +180,9 @@
     nodePackages_latest.pyright
     nodePackages_latest.yaml-language-server
     lua-language-server
-    lua nodejs_20 rustc rustup rustfmt rust-analyzer
+    lua nodejs_20 
+    rust-src rustc rustup rustfmt 
+    haskellPackages.haskell-language-server
     bear
 # -- spotify
     spotify
